@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const userSchema = mongoose.Schema({
+const staffSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     first_name: {
         type: String
@@ -11,7 +11,6 @@ const userSchema = mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true,
         match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
     },
     phone_number: {
@@ -23,10 +22,9 @@ const userSchema = mongoose.Schema({
     },
     role: {
         type: String,
-        required: true,
-        default: 'customer'
+        required: true
     }
 
 })
 
-module.exports = mongoose.model('User', userSchema)
+module.exports = mongoose.model('Staff', staffSchema)

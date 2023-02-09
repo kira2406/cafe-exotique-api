@@ -6,14 +6,14 @@ const morgan = require('morgan')
 
 mongoose.connect('mongodb+srv://admin:' + process.env.MONGO_ATLAS_PW + '@cluster0.nuy52.mongodb.net/CafeExotique?retryWrites=true&w=majority')
 
-const userRoutes = require('./api/routes/users')
+const staffRoutes = require('./api/routes/staffs')
 
 // middlewares
 app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({ extended: false })) // extended : true => supporst extended bodies with rich data
 app.use(bodyParser.json())
 
-app.use('/users', userRoutes)
+app.use('/staff', staffRoutes)
 
 app.use((req, res, next) => {
     const error = new Error('url not found')
