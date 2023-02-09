@@ -51,14 +51,14 @@ exports.staffSignup = (req, res, next) => {
 exports.staffLogin = (req, res, next) => {
     Staff.find({ $or: [{ email: req.body.username }, { phone_number: req.body.username }] })
         .exec()
-        .then(user => {
-            console.log(user)
-            if (user.length < 1) {
+        .then(staff => {
+            console.log(staff)
+            if (staff.length < 1) {
                 res.status(401).json({
                     message: 'Wrong email or phone number'
                 })
             } else {
-                bcrypt.compare(req.body.password, user[0].password, (err, result) => {
+                bcrypt.compare(req.body.password, staff[0].password, (err, result) => {
                     if (err) {
                         return res.status(401).json({
                             message: 'Auth failed'
@@ -66,8 +66,8 @@ exports.staffLogin = (req, res, next) => {
                     }
                     if (result) {
                         const token = jwt.sign({
-                            email: user[0].email,
-                            userId: user[0]._id
+                            email: staff[0].email,
+                            userId: staff[0]._id
                         },
                             process.env.JWT_KEY,
                             {
@@ -75,6 +75,7 @@ exports.staffLogin = (req, res, next) => {
                             },
                         )
                         return res.status(200).json({
+                            _id: staff[0]._id,
                             message: 'Auth successful',
                             token: token
                         })
