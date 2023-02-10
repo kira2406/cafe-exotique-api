@@ -1,5 +1,7 @@
 # Dependency directories
+package-lock.json
 node_modules/
+.idea/*
 
 # Optional npm cache directory
 .npm
