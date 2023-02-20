@@ -4,7 +4,8 @@ const router = express.Router()
 
 const StaffController = require('../controllers/staffController')
 
-router.post('/signup', StaffController.staffSignup)
+
+router.post('/addStaff', StaffController.addStaff)
 
 router.post('/login', StaffController.staffLogin)
 
