@@ -3,51 +3,6 @@ const jwt = require('jsonwebtoken')
 const Staff = require('../models/staff')
 const mongoose = require('mongoose')
 
-exports.staffSignup = (req, res, next) => {
-    Staff.find({ $or: [{ email: req.body.email }, { phone_number: req.body.phoneNumber }] })
-        .exec()
-        .then(staff => {
-            console.log(staff)
-            if (staff.length > 0) {
-                res.status(409).json({
-                    message: 'username already exists'
-                })    // 409 - conflict, 422 - unprocessable request
-            } else {
-                bcrypt.hash(req.body.password, 10, (err, hash) => {
-                    if (err) {
-                        return res.status(500).json({
-                            error: err
-                        })
-                    } else {
-                        const staff = new Staff({
-                            _id: new mongoose.Types.ObjectId(),
-                            email: req.body.email,
-                            phone_number: req.body.phoneNumber,
-                            first_name: req.body.firstName,
-                            last_name: req.body.lastName,
-                            role: req.body.role,
-                            password: hash
-                        })
-                        staff.save()
-                            .then(result => {
-                                console.log(result)
-                                res.status(201).json({
-                                    message: 'Staff user created'
-                                })
-                            })
-                            .catch(err => {
-                                console.log(err)
-                                res.status(500).json({
-                                    error: err
-                                })
-                            })
-
-                    }
-                })
-            }
-        })
-}
-
 exports.staffLogin = (req, res, next) => {
     Staff.find({ $or: [{ email: req.body.username }, { phone_number: req.body.username }] })
         .exec()
@@ -114,4 +69,40 @@ exports.deleteStaff = (req, res, next) => {
                 error: err
             })
         })
+}
+
+exports.addStaff = (req, res, next) => {
+    Staff.find({ $or: [{ email: req.body.email }, { phone_number: req.body.phoneNumber }] })
+        .exec()
+        .then(staff => {
+            console.log(staff)
+            if (staff.length > 0) {
+                res.status(409).json({
+                    message: 'Email / Phone number already exists'
+                })    // 409 - conflict, 422 - unprocessable request
+            } else {
+                const staff = new Staff({
+                    _id: new mongoose.Types.ObjectId(),
+                    email: req.body.email,
+                    phone_number: req.body.phoneNumber,
+                    first_name: req.body.firstName,
+                    last_name: req.body.lastName,
+                    role: req.body.role,
+                })
+                staff.save()
+                    .then(result => {
+                        console.log(result)
+                        res.status(201).json({
+                            message: 'Staff user created'
+                        })
+                    })
+                    .catch(err => {
+                        console.log(err)
+                        res.status(500).json({
+                            error: err
+                        })
+                    })
+            }
+        })
+
 }
