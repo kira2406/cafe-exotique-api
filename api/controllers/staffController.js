@@ -29,6 +29,9 @@ exports.staffLogin = (req, res, next) => {
                                 expiresIn: "1h"
                             },
                         )
+                        req.session.staffId = staff[0]._id
+                        req.session.role = staff[0].role
+                        req.session.email = staff[0].email
                         return res.status(200).json({
                             _id: staff[0]._id,
                             message: 'Auth successful',
@@ -104,5 +107,9 @@ exports.addStaff = (req, res, next) => {
                     })
             }
         })
+
+}
+
+exports.getStaffDetails = (req, res, next) => {
 
 }
